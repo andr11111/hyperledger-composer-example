@@ -1,0 +1,37 @@
+/**
+ * Hedge fund trades network
+ */
+namespace org.acme.mynetwork
+
+
+asset Lot identified by lotId {
+    o String lotId
+    o String securityName
+    o Double quantity
+    --> Client owner
+}
+
+participant Client identified by clientId {
+    o String clientId
+    o String description
+}
+
+participant Custodian identified by custodianId {
+    o String custodianId
+    o String description
+}
+
+participant Trader identified by traderId {
+    o String traderId
+    o String name
+}
+
+transaction Trade {
+    --> Trader trader
+    --> Client client
+    --> Lot lot
+}
+
+event NewTradeEvent {
+    --> Lot lot
+}

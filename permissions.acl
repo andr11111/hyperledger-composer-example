@@ -1,0 +1,182 @@
+/* Admin */
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+/* Common */
+rule CommonReadTransactionRegistry {
+    description: "Allow clients to view their trades"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: READ
+    resource: "org.hyperledger.composer.system.TransactionRegistry"
+    action: ALLOW
+}
+
+rule CommonReadParticipantRegistry {
+    description: "Allow clients to view their trades"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: READ
+    resource: "org.hyperledger.composer.system.ParticipantRegistry"
+    action: ALLOW
+}
+
+rule CommonReadAssetRegistry {
+    description: "Allow clients to view their trades"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: READ
+    resource: "org.hyperledger.composer.system.AssetRegistry"
+    action: ALLOW
+}
+
+rule CommonReadNetwork {
+    description: "Allow clients to view their trades"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: READ
+    resource: "org.hyperledger.composer.system.Network"
+    action: ALLOW
+}
+
+rule ClientReadHistorianRecord {
+    description: "Allow clients to view their trades"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: READ
+    resource: "org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW
+}
+
+/* Trader */
+
+rule TraderManageClient {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.acme.mynetwork.Trader"
+    operation: ALL
+    resource: "org.acme.mynetwork.Client"
+    action: ALLOW
+}
+
+rule TraderManageLots {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.acme.mynetwork.Trader"
+    operation: READ, CREATE
+    resource: "org.acme.mynetwork.Lot"
+    action: ALLOW
+}
+
+rule TraderUpdateLots {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.acme.mynetwork.Trader"
+    operation: UPDATE
+    resource: "org.acme.mynetwork.Lot"
+    transaction: "org.acme.mynetwork.Trade"
+    action: ALLOW
+}
+
+rule TradeReadTrades {
+    description: "Allow clients to view their trades"
+    participant: "org.acme.mynetwork.Trader"
+    operation: READ
+    resource: "org.acme.mynetwork.Trade"
+    action: ALLOW
+}
+
+rule TraderReadOwnTrader {
+    description: "Allow clients to view their securities"
+    participant(t): "org.acme.mynetwork.Trader"
+    operation: READ
+    resource(tt): "org.acme.mynetwork.Trader"
+    condition: (tt.getIdentifier() == t.getIdentifier())
+    action: ALLOW  
+}
+
+rule TraderAddAsset {
+    description: "Allow clients to view their securities"
+    participant: "org.acme.mynetwork.Trader"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.AddAsset"
+    action: ALLOW  
+}
+
+rule TraderCreateHistorianRecord {
+    description: "Allow clients to view their securities"
+    participant: "org.acme.mynetwork.Trader"
+    operation: CREATE
+    resource: "org.hyperledger.composer.system.HistorianRecord"
+    action: ALLOW  
+}
+
+/* Client */
+
+rule ClientReadOwnTrades {
+    description: "Allow clients to view their trades"
+    participant(c): "org.acme.mynetwork.Client"
+    operation: READ
+    resource(t): "org.acme.mynetwork.Trade"
+    condition: (t.client.getIdentifier() == c.getIdentifier())
+    action: ALLOW
+}
+
+rule ClientReadOwnEvents {
+    description: "Allow clients to view their trades"
+    participant(c): "org.acme.mynetwork.Client"
+    operation: READ
+    resource(e): "org.acme.mynetwork.NewTradeEvent"
+    condition: (e.lot.owner.getIdentifier() == c.getIdentifier())
+    action: ALLOW
+}
+
+rule ClientReadOwnLots {
+    description: "Allow clients to view their securities"
+    participant(c): "org.acme.mynetwork.Client"
+    operation: READ
+    resource(s): "org.acme.mynetwork.Lot"
+    condition: (s.owner.getIdentifier() == c.getIdentifier())
+    action: ALLOW  
+}
+
+rule ClientReadOwnClient {
+    description: "Allow clients to view their securities"
+    participant(c): "org.acme.mynetwork.Client"
+    operation: READ
+    resource(cc): "org.acme.mynetwork.Client"
+    condition: (cc.getIdentifier() == c.getIdentifier())
+    action: ALLOW  
+}
+
+/* Custodian */
+
+rule CustodianReadAllTrades {
+    description: "Allow custodian to view all trades"
+    participant: "org.acme.mynetwork.Custodian"
+    operation: READ
+    resource: "org.acme.mynetwork.Trade"
+    action: ALLOW
+}
+
+rule CustodianReadAllLots {
+    description: "Allow custodian to view all securities"
+    participant: "org.acme.mynetwork.Custodian"
+    operation: READ
+    resource: "org.acme.mynetwork.Lot"
+    action: ALLOW
+}
+
+rule CustodianReadAllEvents {
+    description: "Allow clients to view their trades"
+    participant: "org.acme.mynetwork.Custodian"
+    operation: READ
+    resource: "org.acme.mynetwork.NewTradeEvent"
+    action: ALLOW
+}
