@@ -8,6 +8,7 @@ asset Lot identified by lotId {
     o String lotId
     o String securityName
     o Double quantity
+    o Double price
     --> Client owner
 }
 
