@@ -6,3 +6,4 @@ This business network configuration allows hedge fund traders to broadcast trade
 * Clients can view their trades
 * Custodian can view all trades
 
+You can import `hedge-fund-network.bna` in the Composer Playground: https://composer-playground.mybluemix.net.
